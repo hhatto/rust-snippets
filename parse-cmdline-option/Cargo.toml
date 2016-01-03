@@ -1,0 +1,26 @@
+[package]
+name = "parse-cmdline-option"
+version = "0.1.0"
+authors = ["hhatto <hhatto.jp@gmail.com>"]
+
+[dependencies]
+getopts = "*"
+docopt = "0.6"
+rustc-serialize = "0.3"
+argparse = "*"
+
+[[bin]]
+name = "cat-simple"
+path = "src/cat-simple.rs"
+
+[[bin]]
+name = "cat-getopts"
+path = "src/cat-getopts.rs"
+
+[[bin]]
+name = "cat-docopt"
+path = "src/cat-docopt.rs"
+
+[[bin]]
+name = "cat-argparse"
+path = "src/cat-argparse.rs"
