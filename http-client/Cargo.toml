@@ -6,7 +6,12 @@ authors = ["hhatto <hhatto.jp@gmail.com>"]
 [dependencies]
 hyper = "*"
 rustc-serialize = "0.3"
+solicit = "*"
 
 [[bin]]
 name = "get-json-hyper"
 path = "src/get-json-hyper.rs"
+
+[[bin]]
+name = "http2-solicit"
+path = "src/http2-solicit.rs"
