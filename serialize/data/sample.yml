@@ -1,0 +1,7 @@
+# minimal.yml
+domain: http://localhost:8080
+
+paths:
+    - index: /
+    - hello: /hello
+
