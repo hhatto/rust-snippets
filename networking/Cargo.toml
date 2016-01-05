@@ -1,0 +1,15 @@
+[package]
+name = "networking"
+version = "0.1.0"
+authors = ["Hideo Hattori <hattori-h@klab.com>"]
+
+[dependencies]
+ssh2 = "0.2"
+
+[[bin]]
+name = "ssh-command"
+path = "src/ssh-command.rs"
+
+[[bin]]
+name = "scp"
+path = "src/scp.rs"
