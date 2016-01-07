@@ -8,6 +8,9 @@ hyper = "*"
 rustc-serialize = "0.3"
 solicit = "*"
 
+[dependencies.url]
+git = "https://github.com/servo/rust-url"
+
 [[bin]]
 name = "get-json-hyper"
 path = "src/get-json-hyper.rs"
@@ -15,3 +18,7 @@ path = "src/get-json-hyper.rs"
 [[bin]]
 name = "http2-solicit"
 path = "src/http2-solicit.rs"
+
+[[bin]]
+name = "url"
+path = "src/url.rs"
