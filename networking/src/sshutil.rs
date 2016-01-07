@@ -2,7 +2,8 @@ use ssh2::Session;
 use std::env;
 use std::net::TcpStream;
 
-pub fn ssh_login(tcp: &mut TcpStream, username: &'static str) -> Session {
+pub fn ssh_login(addr: &'static str, username: &'static str) -> (TcpStream, Session) {
+    let tcp = TcpStream::connect(addr).unwrap();
     let mut session = Session::new().unwrap();
     session.handshake(&tcp).unwrap();
     let privatekey_filepath = env::home_dir().unwrap().join(".ssh/id_rsa");
@@ -10,5 +11,5 @@ pub fn ssh_login(tcp: &mut TcpStream, username: &'static str) -> Session {
            .unwrap();
 
     assert!(session.authenticated());
-    session
+    (tcp, session)
 }

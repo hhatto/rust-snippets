@@ -1,7 +1,6 @@
 extern crate networking;
 use networking::sshutil;
 use std::io::prelude::*;
-use std::net::TcpStream;
 use std::path::Path;
 
 static USERNAME: &'static str = "username";
@@ -10,8 +9,7 @@ static REMOTE_FILE: &'static str = "/path/to/remote";
 static NEW_REMOTE_FILE: &'static str = "/path/to/remote.new";
 
 fn main() {
-    let mut tcp = TcpStream::connect(REMOTE_ADDRESS).unwrap();
-    let session = sshutil::ssh_login(&mut tcp, USERNAME);
+    let (_tcp, session) = sshutil::ssh_login(REMOTE_ADDRESS, USERNAME);
 
     let (mut remote_file, stat) = session.scp_recv(Path::new(REMOTE_FILE))
                                          .unwrap();
