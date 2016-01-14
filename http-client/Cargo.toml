@@ -16,6 +16,14 @@ name = "get-json-hyper"
 path = "src/get-json-hyper.rs"
 
 [[bin]]
+name = "http-hyper"
+path = "src/http-hyper.rs"
+
+[[bin]]
+name = "http2-hyper"
+path = "src/http2-hyper.rs"
+
+[[bin]]
 name = "http2-solicit"
 path = "src/http2-solicit.rs"
 
