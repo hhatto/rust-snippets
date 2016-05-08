@@ -1,0 +1,16 @@
+[package]
+name = "parser"
+version = "0.1.0"
+authors = ["hhatto <hhatto.jp@gmail.com>"]
+
+[dependencies]
+woothee = "0.1"
+uap-rust = "*"
+
+[[bin]]
+name = "parse-ua-woothee"
+path = "src/parse-ua-woothee.rs"
+
+[[bin]]
+name = "parse-ua-uap"
+path = "src/parse-ua-uap.rs"
