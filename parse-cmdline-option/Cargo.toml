@@ -8,6 +8,7 @@ getopts = "*"
 docopt = "0.6"
 rustc-serialize = "0.3"
 argparse = "*"
+clap = "2"
 
 [[bin]]
 name = "cat-simple"
@@ -24,3 +25,7 @@ path = "src/cat-docopt.rs"
 [[bin]]
 name = "cat-argparse"
 path = "src/cat-argparse.rs"
+
+[[bin]]
+name = "cat-clap"
+path = "src/cat-clap.rs"
