@@ -7,6 +7,7 @@ authors = ["hhatto <hhatto.jp@gmail.com>"]
 hyper = "*"
 rustc-serialize = "0.3"
 solicit = "*"
+websocket = "0.15.2"
 
 [dependencies.url]
 git = "https://github.com/servo/rust-url"
@@ -30,3 +31,11 @@ path = "src/http2-solicit.rs"
 [[bin]]
 name = "url"
 path = "src/url.rs"
+
+[[bin]]
+name = "rust-websocket"
+path = "src/rust-websocket.rs"
+
+[[bin]]
+name = "rust-websocket-server"
+path = "src/rust-websocket-server.rs"
