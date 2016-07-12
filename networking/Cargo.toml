@@ -16,5 +16,5 @@ name = "scp"
 path = "src/scp.rs"
 
 [[bin]]
-name = "unix-domain-socket-client"
-path = "src/unix-domain-socket-client.rs"
+name = "uds-client"
+path = "src/uds-client.rs"
