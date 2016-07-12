@@ -5,6 +5,7 @@ authors = ["Hideo Hattori <hattori-h@klab.com>"]
 
 [dependencies]
 ssh2 = "0.2"
+unix_socket = "0.5"
 
 [[bin]]
 name = "ssh-command"
@@ -13,3 +14,7 @@ path = "src/ssh-command.rs"
 [[bin]]
 name = "scp"
 path = "src/scp.rs"
+
+[[bin]]
+name = "unix-domain-socket-client"
+path = "src/unix-domain-socket-client.rs"
