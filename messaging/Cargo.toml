@@ -1,0 +1,11 @@
+[package]
+name = "messaging"
+version = "0.1.0"
+authors = ["Hideo Hattori <hattori-h@klab.com>"]
+
+[dependencies]
+nats = "*"
+
+[[bin]]
+name = "nats-pub"
+path = "src/nats-pub.rs"
