@@ -4,7 +4,7 @@ version = "0.1.0"
 authors = ["hhatto <hhatto.jp@gmail.com>"]
 
 [dependencies]
-woothee = "0.1"
+woothee = "0.4"
 uap-rust = "*"
 
 [[bin]]
