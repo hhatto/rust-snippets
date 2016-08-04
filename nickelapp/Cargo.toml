@@ -5,6 +5,8 @@ authors = ["Hideo Hattori <hattori-h@klab.com>"]
 
 [dependencies]
 mysql = "*"
+r2d2 = "0.7"
+r2d2_sqlite = "0.0.6"
 
 [dependencies.nickel]
 version = "*"
@@ -12,6 +14,13 @@ version = "*"
 [dependencies.nickel_mysql]
 git = "https://github.com/hhatto/nickel-mysql.git"
 
+[dependencies.nickel_sqlite]
+git = "https://github.com/flosse/nickel-sqlite.git"
+
 [[bin]]
 name = "with-mysql"
 path = "src/with-mysql.rs"
+
+[[bin]]
+name = "with-sqlite"
+path = "src/with-sqlite.rs"
