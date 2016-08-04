@@ -1,0 +1,17 @@
+[package]
+name = "nickelapp"
+version = "0.1.0"
+authors = ["Hideo Hattori <hattori-h@klab.com>"]
+
+[dependencies]
+mysql = "*"
+
+[dependencies.nickel]
+version = "*"
+
+[dependencies.nickel_mysql]
+git = "https://github.com/hhatto/nickel-mysql.git"
+
+[[bin]]
+name = "with-mysql"
+path = "src/with-mysql.rs"
