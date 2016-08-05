@@ -19,3 +19,7 @@ path = "src/parse-yaml.rs"
 [[bin]]
 name = "msgpackrust"
 path = "src/msgpackrust.rs"
+
+[[bin]]
+name = "msgpackrust_tomsgpack"
+path = "src/msgpackrust_tomsgpack.rs"
