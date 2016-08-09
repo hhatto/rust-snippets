@@ -7,6 +7,8 @@ authors = ["Hideo Hattori <hattori-h@klab.com>"]
 mysql = "*"
 r2d2 = "0.7"
 r2d2_sqlite = "0.0.6"
+nickel_mustache = "*"
+rustc-serialize = "0.3"
 
 [dependencies.nickel]
 version = "*"
@@ -24,3 +26,7 @@ path = "src/with-mysql.rs"
 [[bin]]
 name = "with-sqlite"
 path = "src/with-sqlite.rs"
+
+[[bin]]
+name = "with-mustache"
+path = "src/with-mustache.rs"
