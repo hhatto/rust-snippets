@@ -1,0 +1,10 @@
+
+hello {{ hello }}
+
+{% for i in vector %}
+  {{ i }}
+{% endfor %}
+
+{% if foo %}
+  {{ foo }}
+{% endif %}
