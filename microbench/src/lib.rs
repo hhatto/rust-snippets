@@ -26,6 +26,17 @@ pub fn create_hashmap_with_tuple_collect() {
         .collect::<HashMap<String, String>>();
 }
 
+pub fn create_hashmap_with_tuple_cloned_collect() {
+    let mut h: HashMap<String, String> = [("hello1".to_string(), "world1".to_string()),
+                                          ("hello2".to_string(), "world2".to_string()),
+                                          ("hello3".to_string(), "world3".to_string()),
+                                          ("hello4".to_string(), "world4".to_string()),
+                                          ("hello5".to_string(), "world5".to_string())]
+        .iter()
+        .cloned()
+        .collect();
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -39,5 +50,10 @@ mod tests {
     #[bench]
     fn bench_create_hashmap_with_tuple_collect(b: &mut Bencher) {
         b.iter(|| create_hashmap_with_tuple_collect());
+    }
+
+    #[bench]
+    fn bench_create_hashmap_with_tuple_cloned_collect(b: &mut Bencher) {
+        b.iter(|| create_hashmap_with_tuple_cloned_collect());
     }
 }
