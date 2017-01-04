@@ -1,0 +1,6 @@
+[package]
+name = "microbench"
+version = "0.1.0"
+authors = ["hhatto <hhatto.jp@gmail.com>"]
+
+[dependencies]
