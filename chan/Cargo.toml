@@ -1,0 +1,17 @@
+[package]
+name = "chan"
+version = "0.1.0"
+authors = ["Hideo Hattori <hattori-h@klab.com>"]
+
+[dependencies]
+chan = "*"
+chan-signal = "*"
+#lockless = "*"
+
+[[bin]]
+name = "chan"
+path = "src/chan.rs"
+
+[[bin]]
+name = "chan-mpmc"
+path = "src/chan-mpmc.rs"
