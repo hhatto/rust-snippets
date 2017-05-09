@@ -1,0 +1,16 @@
+[package]
+name = "progressbar"
+version = "0.1.0"
+authors = ["Hideo Hattori <hattori-h@klab.com>"]
+
+[dependencies]
+progress = "0.1"
+pbr = "1.0"
+
+[[bin]]
+name = "progress"
+path = "src/progress.rs"
+
+[[bin]]
+name = "pbr"
+path = "src/pbr.rs"
