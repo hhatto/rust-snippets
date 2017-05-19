@@ -1,11 +1,11 @@
 [package]
-name = "template-engine"
+name = "protobuf"
 version = "0.1.0"
 authors = ["Hideo Hattori <hhatto.jp@gmail.com>"]
 
 [dependencies]
-tera = "*"
+protobuf = "1.2.2"
 
 [[bin]]
-name = "tera"
-path = "src/tera.rs"
+name = "protobuf"
+path = "src/main.rs"

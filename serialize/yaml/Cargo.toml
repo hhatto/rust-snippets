@@ -1,11 +1,12 @@
 [package]
-name = "template-engine"
+name = "yaml"
 version = "0.1.0"
 authors = ["Hideo Hattori <hhatto.jp@gmail.com>"]
 
 [dependencies]
-tera = "*"
+yaml-rust = "*"
+rustc-serialize = "0.3"
 
 [[bin]]
-name = "tera"
-path = "src/tera.rs"
+name = "parse-yaml"
+path = "src/parse-yaml.rs"
