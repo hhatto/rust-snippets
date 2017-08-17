@@ -1,0 +1,19 @@
+[package]
+name = "xml"
+version = "0.1.0"
+authors = ["Hideo Hattori <hhatto.jp@gmail.com>"]
+
+[dependencies]
+quick-xml = "0.8.1"
+xml-rs = "0.6"
+
+[[bin]]
+name = "quickxml"
+path = "src/quickxml.rs"
+
+[[bin]]
+name = "xmlrs"
+path = "src/xmlrs.rs"
+
+[features]
+test = []
