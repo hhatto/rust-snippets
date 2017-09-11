@@ -17,10 +17,9 @@ fn main() {
     let mut cursor = conn.prepare("INSERT INTO person (name, age, created)
                                    VALUES (?, ?, datetime())"
                                    ).expect("prepare error").cursor();
-    cursor.bind(&[
-                Value::String(name.to_string()),
-                Value::Integer(age)
-    ]).expect("bind insert error");
+    cursor.bind(&[Value::String(name.to_string()),
+                  Value::Integer(age)
+                 ]).expect("bind insert error");
 
     while let Some(row) = cursor.next().unwrap() {
         println!("{:?}", row);
