@@ -4,10 +4,20 @@ version = "0.1.0"
 authors = ["hhatto <hhatto.jp@gmail.com>"]
 
 [dependencies]
-hyper = "*"
+tokio-core = "0.1"
+hyper = "0.11"
+http = "0.1"
+native-tls = "0.1"
+tokio-tls = "0.1"
 rustc-serialize = "0.3"
 solicit = "0.4"
 websocket = "0.20.2"
+h2 = "0.1"
+futures = "0.1"
+rustls = "0.12"
+tokio-rustls = "0.5"
+webpki = "0.18.0-alpha"
+webpki-roots = "*"
 
 [dependencies.url]
 git = "https://github.com/servo/rust-url"
