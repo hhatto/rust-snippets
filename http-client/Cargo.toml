@@ -6,8 +6,8 @@ authors = ["hhatto <hhatto.jp@gmail.com>"]
 [dependencies]
 hyper = "*"
 rustc-serialize = "0.3"
-solicit = "*"
-websocket = "0.15.2"
+solicit = "0.4"
+websocket = "0.20.2"
 
 [dependencies.url]
 git = "https://github.com/servo/rust-url"
