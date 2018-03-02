@@ -18,6 +18,11 @@ rustls = "0.12"
 tokio-rustls = "0.5"
 webpki = "0.18.0-alpha"
 webpki-roots = "*"
+env_logger = "0.5.4"
+
+[dependencies.ws]
+version = "0.7.3"
+features = ["ssl"]
 
 [dependencies.url]
 git = "https://github.com/servo/rust-url"
@@ -49,3 +54,7 @@ path = "src/rust-websocket.rs"
 [[bin]]
 name = "rust-websocket-server"
 path = "src/rust-websocket-server.rs"
+
+[[bin]]
+name = "ws-client"
+path = "src/ws-client.rs"
