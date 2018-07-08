@@ -1,0 +1,8 @@
+[package]
+name = "metalexample"
+version = "0.1.0"
+authors = ["Hideo Hattori <hhatto.jp@gmail.com>"]
+
+[dependencies]
+metal-rs = "0.10.2"
+image = "0.19"
