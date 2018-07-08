@@ -1,0 +1,17 @@
+[package]
+name = "envlogger"
+version = "0.1.0"
+authors = ["Hideo Hattori <hhatto.jp@gmail.com>"]
+
+[dependencies]
+log = "0.3"
+env_logger = "0.4"
+time = "0.1"
+
+[[bin]]
+name = "simple"
+path = "src/simple.rs"
+
+[[bin]]
+name = "myformatter"
+path = "src/myformatter.rs"

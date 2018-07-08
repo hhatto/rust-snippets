@@ -1,0 +1,12 @@
+[package]
+name = "yaml"
+version = "0.1.0"
+authors = ["Hideo Hattori <hhatto.jp@gmail.com>"]
+
+[dependencies]
+yaml-rust = "*"
+rustc-serialize = "0.3"
+
+[[bin]]
+name = "parse-yaml"
+path = "src/parse-yaml.rs"

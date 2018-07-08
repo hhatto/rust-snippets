@@ -1,12 +1,12 @@
-extern crate rmp;
+extern crate rmpv;
 
 trait M {
-    fn to_msgpack(&self) -> rmp::Value;
+    fn to_msgpack(&self) -> rmpv::Value;
 }
 
 impl M for i32 {
-    fn to_msgpack(&self) -> rmp::Value {
-        rmp::Value::from(*self)
+    fn to_msgpack(&self) -> rmpv::Value {
+        rmpv::Value::from(*self)
     }
 }
 
@@ -17,10 +17,11 @@ struct MyStruct {
 }
 
 impl M for MyStruct {
-    fn to_msgpack(&self) -> rmp::Value {
+    fn to_msgpack(&self) -> rmpv::Value {
         let id = self.id;
         let name = self.name.to_string();
-        rmp::Value::Array(vec![rmp::Value::from(id), rmp::Value::String(name.to_owned())])
+        rmpv::Value::Array(vec![rmpv::Value::from(id),
+                                rmpv::Value::String(name.into())])
     }
 }
 

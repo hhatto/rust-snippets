@@ -1,0 +1,17 @@
+[package]
+name = "email"
+version = "0.1.0"
+authors = ["Hideo Hattori <hhatto.jp@gmail.com>"]
+
+[dependencies]
+lettre = "0.7"
+lettre_email = "0.7"
+mime = "0.3"
+
+[[bin]]
+name = "lettre-simple"
+path = "src/lettre-simple.rs"
+
+[[bin]]
+name = "lettre-use-gmail"
+path = "src/lettre-use-gmail.rs"

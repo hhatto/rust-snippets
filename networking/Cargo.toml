@@ -1,11 +1,12 @@
 [package]
 name = "networking"
 version = "0.1.0"
-authors = ["Hideo Hattori <hattori-h@klab.com>"]
+authors = ["Hideo Hattori <hhatto.jp@gmail.com>"]
 
 [dependencies]
 ssh2 = "0.2"
 unix_socket = "0.5"
+nix = { git = "https://github.com/hhatto/nix.git", branch = "tfo" }
 
 [[bin]]
 name = "ssh-command"
@@ -18,3 +19,7 @@ path = "src/scp.rs"
 [[bin]]
 name = "uds-client"
 path = "src/uds-client.rs"
+
+[[bin]]
+name = "nix-tfo-client"
+path = "src/nix-tfo-client.rs"

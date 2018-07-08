@@ -44,7 +44,7 @@ fn main() {
         print_number: false,
         skip_blank: false,
     };
-    let matches = App::new("cat")
+    let mut app = App::new("cat")
         .version("v0.1")
         .arg(Arg::with_name("number")
             .short("n")
@@ -56,8 +56,13 @@ fn main() {
             .help("some files")
             .index(1)
             .multiple(true)
-            .takes_value(true))
-        .get_matches();
+            .takes_value(true));
+    let matches = app.clone().get_matches();
+    if matches.values_of("files").is_none() {
+        let _ = app.print_help();
+        println!("");
+        return;
+    }
     let files = matches.values_of("files").unwrap();
     match matches.occurrences_of("number") {
         1 => opt.print_number = true,

@@ -1,11 +1,11 @@
 extern crate url;
-use url::{Url, UrlParser};
+use url::Url;
 
 fn main() {
-    let host = Url::parse("http://localhost:7777/").unwrap();
-    let pairs = [("hoge", "fuga"), ("t", "zzz")];
-    let mut target_url = UrlParser::new().base_url(&host).parse("/hello").unwrap();
-    target_url.set_query_from_pairs(pairs.iter().map(|&(k, v)| (k, v)));
+    let url = Url::parse("http://localhost:7777/").expect("fail Url::parse()");
+    let mut target_url = url.join("/hello").expect("fail url join()");
+    target_url.set_query(Some("hoge=fuga"));
+    target_url.set_query(Some("t=zzz"));
 
     println!("{}", target_url);
 }

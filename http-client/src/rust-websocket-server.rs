@@ -1,41 +1,29 @@
 extern crate websocket;
 use std::thread;
-use websocket::{Server, Message, Sender, Receiver};
-use websocket::message::Type;
-use websocket::header::WebSocketProtocol;
+use websocket::sync::Server;
+use websocket::OwnedMessage;
 use websocket::result::WebSocketError;
 
 fn main() {
     let server = Server::bind("127.0.0.1:9999").unwrap();
 
-    for connection in server {
+    for request in server.filter_map(Result::ok) {
         thread::spawn(move || {
-            let request = connection.unwrap().read_request().unwrap();
-            let headers = request.headers.clone();
-
-            request.validate().unwrap();
-
-            let mut response = request.accept();
-            if let Some(&WebSocketProtocol(ref protocols)) = headers.get() {
-                if protocols.contains(&("rust-websocket".to_string())) {
-                    response.headers.set(WebSocketProtocol(vec!["rust-websocket".to_string()]));
-                }
+            if !request.protocols().contains(&("rust-websocket".to_string())) {
+                request.reject().expect("fail request reject()");
+                return;
             }
 
-            let mut client = response.send().unwrap();
-            let ip = client.get_mut_sender()
-                           .get_mut()
-                           .peer_addr()
-                           .unwrap();
-
+            let client = request.accept().expect("fail accept");
+            let ip = client.peer_addr().expect("fail peer_addr()");
             println!("Connection from {}", ip);
 
-            let (mut sender, mut receiver) = client.split();
+            let (mut receiver, mut sender) = client.split().expect("fail client.split()");
 
             let mut cnt: i32 = 0;
             for msg in receiver.incoming_messages() {
                 cnt += 1;
-                let msg: Message = match msg {
+                let msg: OwnedMessage = match msg {
                     Ok(m) => m,
                     Err(WebSocketError::NoDataAvailable) => return, // connection close by client
                     Err(e) => {
@@ -44,18 +32,18 @@ fn main() {
                     }
                 };
 
-                match msg.opcode {
-                    Type::Close => {
-                        let msg = Message::close();
+                match msg {
+                    OwnedMessage::Close(_) => {
+                        let msg = OwnedMessage::Close(None);
                         sender.send_message(&msg).unwrap();
                         println!("Client {} disconnected", ip);
                         return;
                     }
-                    Type::Ping => {
-                        let msg = Message::pong(msg.payload);
+                    OwnedMessage::Ping(ping) => {
+                        let msg = OwnedMessage::Pong(ping);
                         sender.send_message(&msg).unwrap();
                     }
-                    Type::Pong => {
+                    OwnedMessage::Pong(_) => {
                         println!("recv PONG");
                     }
                     _ => {
@@ -64,7 +52,7 @@ fn main() {
 
                         if cnt % 2 == 1 {
                             let d = Vec::new();
-                            sender.send_message(&Message::ping(d)).unwrap();
+                            sender.send_message(&OwnedMessage::Ping(d)).unwrap();
                             println!("send PING");
                         }
                     }

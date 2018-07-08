@@ -2,16 +2,14 @@ extern crate websocket;
 use std::thread;
 use std::time::Duration;
 use std::sync::mpsc;
-use websocket::{Message, Sender, Receiver};
-use websocket::client::request::Url;
-use websocket::client::Client;
-use websocket::message::Type;
-use websocket::stream::WebSocketStream;
+use std::net::TcpStream;
+use websocket::{Message, OwnedMessage};
+use websocket::client::ClientBuilder;
 use websocket::result::WebSocketError;
-use websocket::sender as wsender;
-use websocket::receiver as wreceiver;
+use websocket::sync::sender as wsender;
+use websocket::sync::receiver as wreceiver;
 
-fn sendloop(mut sender: wsender::Sender<WebSocketStream>, rx: mpsc::Receiver<Message>) {
+fn sendloop(mut sender: wsender::Writer<TcpStream>, rx: mpsc::Receiver<OwnedMessage>) {
     let mut cnt = 0;
     loop {
         cnt += 1;
@@ -26,44 +24,52 @@ fn sendloop(mut sender: wsender::Sender<WebSocketStream>, rx: mpsc::Receiver<Mes
         };
         println!("send msg: {:?}", msg);
 
-        let _ = match rx.try_recv() {
-            Ok(m) => {
-                match m.opcode {
-                    Type::Pong => {
-                        sender.send_message(&m);
-                        println!("send PONG: {:?}", m);
-                    }
-                    _ => {
-                        continue;
-                    }
-                }
+        let message = match rx.try_recv() {
+            Ok(m) => m,
+            Err(_) => {
+                return;
             }
-            Err(_) => {}
         };
+        match message {
+            OwnedMessage::Close(_) => {
+                return;
+            }
+            _ => (),
+        }
 
+        match sender.send_message(&message) {
+            Ok(()) => (),
+            Err(e) => {
+                println!("Send Loop: {:?}", e);
+                let _ = sender.send_message(&Message::close());
+                return;
+            }
+        }
         std::thread::sleep(Duration::from_millis(1500));
     }
 }
 
-fn recvloop(mut receiver: wreceiver::Receiver<WebSocketStream>, tx: mpsc::Sender<Message>) {
+fn recvloop(mut receiver: wreceiver::Reader<TcpStream>, tx: mpsc::Sender<OwnedMessage>) {
     for msg in receiver.incoming_messages() {
-        let msg: Message = match msg {
+        let msg: OwnedMessage = match msg {
             Ok(m) => m,
             Err(WebSocketError::NoDataAvailable) => return, // connection close by server
             Err(e) => {
-                println!("Receive Loop: {:?}", e);
+                println!("Receive Loop First: {}", e);
                 break;
             }
         };
 
-        match msg.opcode {
-            Type::Close => {
-                let _ = tx.send(Message::close());
+        match msg {
+            OwnedMessage::Close(_) => {
+                println!("recv Close");
+                let _ = tx.send(OwnedMessage::Close(None));
                 return;
             }
-            Type::Ping => {
-                match tx.send(Message::pong(msg.payload)) {
-                    Ok(()) => println!("recv PING"),
+            OwnedMessage::Ping(ping) => {
+                println!("recv Ping");
+                match tx.send(OwnedMessage::Pong(ping)) {
+                    Ok(()) => println!("send Pong"),
                     Err(e) => {
                         println!("Receive Loop: {:?}", e);
                         return;
@@ -76,16 +82,13 @@ fn recvloop(mut receiver: wreceiver::Receiver<WebSocketStream>, tx: mpsc::Sender
 }
 
 fn main() {
-    let url = Url::parse("ws://127.0.0.1:9999").unwrap();
-    println!("Connect to {}", url);
-
-    let req = Client::connect(url).unwrap();
-    let res = req.send().unwrap();
-
-    res.validate().unwrap();
+    let client = ClientBuilder::new("ws://127.0.0.1:9999")
+        .expect("fail new ws client")
+        .add_protocol("rust-websocket")
+        .connect_insecure().unwrap();
     println!("connected");
 
-    let (sender, receiver) = res.begin().split();
+    let (receiver, sender) = client.split().expect("fail client split()");
     let (tx, rx) = mpsc::channel();
     let send_loop = thread::spawn(move || sendloop(sender, rx));
     let receive_loop = thread::spawn(move || recvloop(receiver, tx));
