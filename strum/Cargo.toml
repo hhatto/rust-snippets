@@ -1,0 +1,8 @@
+[package]
+name = "strum-example"
+version = "0.1.0"
+authors = ["Hideo Hattori <hhatto.jp@gmail.com>"]
+
+[dependencies]
+strum = "0.10"
+strum_macros = "0.10"
