@@ -123,7 +123,7 @@ impl Filesystem for MemFS {
 }
 
 fn main() {
-    env_logger::init().expect("fail logger init");
+    env_logger::init();
     let mountpoint = env::args_os().nth(1).expect("usage: backlogfs MOUNTPOINT");
     let mut inodes = HashMap::new();
     let datas = HashMap::new();

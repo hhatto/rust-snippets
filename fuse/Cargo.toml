@@ -5,7 +5,7 @@ authors = ["Hideo Hattori <hhatto.jp@gmail.com>"]
 
 [dependencies]
 fuse = "0.3"
-log = "0.3"
-env_logger = "0.3"
+log = "0.4"
+env_logger = "0.6"
 time = "0.1"
 libc = "0.2"
