@@ -1,4 +1,5 @@
-extern crate rustc_serialize;
+#[macro_use]
+extern crate serde;
 extern crate docopt;
 use docopt::Docopt;
 use std::io::BufReader;
@@ -18,7 +19,7 @@ Options:
   -n    Number the output lines, starting at 1.
 ";
 
-#[derive(Debug, RustcDecodable)]
+#[derive(Debug, Deserialize)]
 struct Args {
     flag_b: bool,
     flag_n: bool,
@@ -56,7 +57,7 @@ fn print_lines(path: &Path, opt: &Args) {
 
 fn main() {
     let args: Args = Docopt::new(USAGE)
-                         .and_then(|d| d.decode())
+                         .and_then(|d| d.deserialize())
                          .unwrap_or_else(|e| e.exit());
 
     for arg in &args.arg_file {
