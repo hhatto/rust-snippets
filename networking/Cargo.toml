@@ -6,6 +6,7 @@ authors = ["Hideo Hattori <hhatto.jp@gmail.com>"]
 [dependencies]
 ssh2 = "0.2"
 unix_socket = "0.5"
+dirs = "1.0"
 nix = { git = "https://github.com/hhatto/nix.git", branch = "tfo" }
 
 [[bin]]
