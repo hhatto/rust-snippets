@@ -1,13 +1,14 @@
 extern crate rand;
 use std::thread;
+use std::time::Duration;
 use rand::random;
 
 const NUM_THREADS: i32 = 10;
 
 fn task(arg: i32) -> (i32, u32) {
-    let x = rand::random::<u32>();
+    let x = random::<u32>();
     let s = x % 5000;
-    thread::sleep_ms(s);
+    thread::sleep(Duration::from_millis(s as u64));
     (arg, s)
 }
 
