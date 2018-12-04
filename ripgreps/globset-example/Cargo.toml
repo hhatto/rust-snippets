@@ -1,0 +1,8 @@
+[package]
+name = "globset-example"
+version = "0.1.0"
+authors = ["Hideo Hattori <hhatto.jp@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+globset = "0.3"
