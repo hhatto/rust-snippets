@@ -4,7 +4,7 @@ use crossbeam_channel as channel;
 
 fn main() {
     let (tx, rx) = channel::bounded::<DirEntry>(100);
-    let builder = WalkBuilder::new("/Users/hattori/work");
+    let mut builder = WalkBuilder::new("./");
 
     let stdout_thread = thread::spawn(move || {
         for dent in rx {
@@ -12,7 +12,7 @@ fn main() {
         }
     });
 
-    builder.build_parallel().run(|| {
+    builder.threads(8).build_parallel().run(|| {
         let tx = tx.clone();
         Box::new(move |result| {
             use ignore::WalkState::*;
