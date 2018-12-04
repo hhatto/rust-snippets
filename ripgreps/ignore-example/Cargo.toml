@@ -1,0 +1,17 @@
+[package]
+name = "ignore-example"
+version = "0.1.0"
+authors = ["Hideo Hattori <hhatto.jp@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+ignore = "0.4"
+crossbeam-channel = "0.3"
+
+[[bin]]
+name = "simple"
+path = "src/main.rs"
+
+[[bin]]
+name = "parallel"
+path = "src/parallel.rs"
