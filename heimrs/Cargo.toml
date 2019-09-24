@@ -1,0 +1,14 @@
+[package]
+name = "heimrs"
+version = "0.1.0"
+authors = ["Hideo Hattori <hhatto.jp@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+heim = "0.0.8-alpha.1"
+heim-common = "0.0.8-alpha.1"
+heim-cpu = "0.0.8-alpha.1"
+heim-derive = "0.0.8-alpha.1"
+futures-executor-preview = "0.3.0-alpha.18"
