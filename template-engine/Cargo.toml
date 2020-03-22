@@ -2,9 +2,10 @@
 name = "template-engine"
 version = "0.1.0"
 authors = ["Hideo Hattori <hhatto.jp@gmail.com>"]
+edition = "2018"
 
 [dependencies]
-tera = "*"
+tera = "1.1.0"
 
 [[bin]]
 name = "tera"
