@@ -4,7 +4,7 @@ use tera::{Tera, Context};
 
 fn main() {
     let root_path = env::current_dir().unwrap();
-    let template_dir = root_path.join(Path::new("templates/*"));
+    let template_dir = root_path.join(Path::new("templates/*.tera"));
     let template_engine = match Tera::new(template_dir.to_str().unwrap()) {
         Ok(t) => t,
         Err(e) => panic!("tera::new error: {}", e),
