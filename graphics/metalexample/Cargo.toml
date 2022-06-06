@@ -5,4 +5,4 @@ authors = ["Hideo Hattori <hhatto.jp@gmail.com>"]
 
 [dependencies]
 metal-rs = "0.10.2"
-image = "0.19"
+image = "0.23"
