@@ -93,9 +93,9 @@ fn main() {
             depth: 1,
         }
     };
-    let buf = img.raw_pixels();
+    let buf = img.clone().into_rgba8();
     texture.get_bytes(
         unsafe { mem::transmute(buf.as_ptr()) },
         region, 0, bytes_per_row);
-    let _ = save_buffer("triangle.png", &buf, texture.width() as u32, texture.height() as u32, ColorType::RGBA(8));
+    let _ = save_buffer("triangle.png", &buf, texture.width() as u32, texture.height() as u32, ColorType::Rgba8);
 }
