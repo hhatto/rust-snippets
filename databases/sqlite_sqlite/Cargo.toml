@@ -4,4 +4,4 @@ version = "0.1.0"
 authors = ["Hideo Hattori <hhatto.jp@gmail.com>"]
 
 [dependencies]
-sqlite = "0.23"
+sqlite = "0.26"
