@@ -1,7 +1,0 @@
-[workspace]
-members = [
-    "diesel_mysql",
-    "rusqlite_sqlite",
-    "rustsqlite_sqlite",
-    "sqlite_sqlite",
-]
