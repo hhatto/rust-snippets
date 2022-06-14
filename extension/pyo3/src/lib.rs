@@ -1,16 +1,17 @@
-#![feature(proc_macro, specialization)]
-
 extern crate pyo3;
 extern crate woothee;
 
 use std::collections::HashMap;
 use woothee::parser::{Parser, WootheeResult};
 use pyo3::prelude::*;
+use pyo3::types::*;
 
-#[py::modinit(fast_woothee_pyo3)]
-fn init_mod(py: Python, m: &PyModule) -> PyResult<()> {
+#[pymodule]
+#[pyo3(name = "fast_woothee_pyo3")]
+fn init_mod(_py: Python, m: &PyModule) -> PyResult<()> {
 
-    #[pyfn(m, "parse")]
+    #[pyfunction]
+    #[pyo3(name = "parse")]
     pub fn parse(agent: &str) -> PyResult<HashMap<String, String>> {
         let parser = Parser::new();
         let result = parser.parse(agent);
@@ -29,7 +30,8 @@ fn init_mod(py: Python, m: &PyModule) -> PyResult<()> {
         Ok(h)
     }
 
-    #[pyfn(m, "parse2")]
+    #[pyfunction]
+    #[pyo3(name = "parse2")]
     pub fn parse2(agent: &str) -> PyResult<PyObject> {
         let parser = Parser::new();
         let result = parser.parse(agent);
@@ -50,7 +52,8 @@ fn init_mod(py: Python, m: &PyModule) -> PyResult<()> {
         Ok(h.to_object(py))
     }
 
-    #[pyfn(m, "is_crawler")]
+    #[pyfunction]
+    #[pyo3(name = "is_crawler")]
     pub fn is_crawler(agent: &str) -> PyResult<bool> {
         if agent.is_empty() || agent == "-" {
             return Ok(false);
@@ -60,6 +63,10 @@ fn init_mod(py: Python, m: &PyModule) -> PyResult<()> {
         let mut result = WootheeResult::new();
         Ok(parser.try_crawler(agent, &mut result))
     }
+
+    m.add_function(wrap_pyfunction!(parse, m)?)?;
+    m.add_function(wrap_pyfunction!(parse2, m)?)?;
+    m.add_function(wrap_pyfunction!(is_crawler, m)?)?;
 
     Ok(())
 }

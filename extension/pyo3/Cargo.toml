@@ -11,5 +11,5 @@ crate-type = ["cdylib"]
 woothee = "0.8"
 
 [dependencies.pyo3]
-version = "0.2"
+version = "0.16"
 features = ["extension-module"]
