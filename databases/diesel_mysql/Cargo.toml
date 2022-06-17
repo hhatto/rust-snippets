@@ -4,6 +4,6 @@ version = "0.1.0"
 authors = ["Hideo Hattori <hhatto.jp@gmail.com>"]
 
 [dependencies]
-diesel = { version = "0.11", features = ["mysql"] }
+diesel = { version = "1.4", features = ["mysql"] }
 diesel_codegen  = { version = "0.11", features = ["mysql"] }
 dotenv = "0.8"
