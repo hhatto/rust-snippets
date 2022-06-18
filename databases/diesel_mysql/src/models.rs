@@ -1,6 +1,7 @@
 #[derive(Queryable)]
 pub struct Memo {
-    pub id: i32,
+    pub id: u32,
     pub title: String,
     pub body: String,
+    pub published: bool,
 }

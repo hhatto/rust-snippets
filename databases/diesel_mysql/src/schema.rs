@@ -1,1 +1,8 @@
-infer_schema!("dotenv:DATABASE_URL");
+table! {
+    memos (id) {
+        id -> Unsigned<Integer>,
+        title -> Varchar,
+        body -> Text,
+        published -> Bool,
+    }
+}
