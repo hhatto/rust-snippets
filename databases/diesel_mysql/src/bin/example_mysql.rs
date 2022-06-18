@@ -12,6 +12,6 @@ fn main() {
     let results = memos.limit(5).load::<Memo>(&dbconn).expect("select error");
 
     for memo in results {
-        println!("{}, {}, {}", memo.id, memo.title, memo.body);
+        println!("{}, {}, {}, {}", memo.id, memo.title, memo.body, memo.published);
     }
 }
