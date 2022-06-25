@@ -1,11 +1,11 @@
 #[macro_use]
 extern crate diesel;
 
-pub mod schema;
 pub mod models;
+pub mod schema;
 
-use diesel::prelude::*;
 use diesel::mysql::MysqlConnection;
+use diesel::prelude::*;
 use dotenv::dotenv;
 use std::env;
 
