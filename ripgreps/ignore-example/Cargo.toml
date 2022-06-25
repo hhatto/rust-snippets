@@ -6,7 +6,7 @@ edition = "2018"
 
 [dependencies]
 ignore = "0.4"
-crossbeam-channel = "0.3"
+crossbeam-channel = "0.5"
 
 [[bin]]
 name = "simple"
