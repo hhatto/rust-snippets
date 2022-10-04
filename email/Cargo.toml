@@ -2,10 +2,11 @@
 name = "email"
 version = "0.1.0"
 authors = ["Hideo Hattori <hhatto.jp@gmail.com>"]
+edition = "2021"
 
 [dependencies]
-lettre = "0.7"
-lettre_email = "0.7"
+lettre = "0.9"
+lettre_email = "0.9"
 mime = "0.3"
 
 [[bin]]

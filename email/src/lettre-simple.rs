@@ -1,21 +1,16 @@
-extern crate lettre;
-
-use std::env::temp_dir;
-use lettre::file::FileEmailTransport;
-use lettre::{SimpleSendableEmail, EmailTransport, EmailAddress};
+use lettre::{SmtpClient, Transport};
+use lettre_email::EmailBuilder;
 
 fn sendmail_with_file() {
-    let t = temp_dir();
-    println!("{:?}", t);
-    let mut sender = FileEmailTransport::new(t);
-    let email = SimpleSendableEmail::new(
-        EmailAddress::new("from-address@localhost".to_string()),
-        vec![EmailAddress::new("to-address@localhost".to_string())],
-        "Message-ID".to_string(),
-        "Hello rust mail body".to_string()
-        );
+    let mut sender = SmtpClient::new_unencrypted_localhost().unwrap().transport();
+    let email = EmailBuilder::new()
+        .from("from-address@localhost")
+        .to("to-address@localhost")
+        .subject("Message-ID")
+        .body("Hello rust mail body".to_string())
+        .build().expect("fail to build email");
 
-    let result = sender.send(&email);
+    let result = sender.send(email.into());
     println!("{}", result.is_ok());
 }
 
