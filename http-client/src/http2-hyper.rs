@@ -1,79 +1,92 @@
-extern crate rustls;
-extern crate futures;
-extern crate h2;
-extern crate hyper;
-extern crate http;
-extern crate tokio_core;
-extern crate tokio_rustls;
-extern crate webpki;
-extern crate webpki_roots;
-
+use std::error::Error;
 use std::net::ToSocketAddrs;
-use futures::*;
 use h2::client;
-use http::{Method, Request};
-use tokio_core::net::TcpStream;
-use tokio_core::reactor::Core;
-use rustls::Session;
-use tokio_rustls::ClientConfigExt;
-use webpki::DNSNameRef;
+use http::{HeaderMap, Request};
+use tokio::net::TcpStream;
+use tokio_rustls::TlsConnector;
+use tokio_rustls::rustls::{OwnedTrustAnchor, RootCertStore, ServerName};
 
 const ALPN_H2: &str = "h2";
+static URL: &'static str = "https://http2.github.io";
 
-static URL: &'static str = "http1://nghttp2.org/httpbin/get";
-
-fn h2() {
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn Error>> {
     let tls_client_config = std::sync::Arc::new({
-        let mut c = rustls::ClientConfig::new();
-        c.root_store
-            .add_server_trust_anchors(&webpki_roots::TLS_SERVER_ROOTS);
-        c.alpn_protocols.push(ALPN_H2.to_owned());
+        let mut root_store = RootCertStore::empty();
+        root_store.add_server_trust_anchors(webpki_roots::TLS_SERVER_ROOTS.0.iter().map(|ta| {
+            OwnedTrustAnchor::from_subject_spki_name_constraints(
+                ta.subject,
+                ta.spki,
+                ta.name_constraints,
+            )
+        }));
+
+        let mut c = tokio_rustls::rustls::ClientConfig::builder()
+            .with_safe_defaults()
+            .with_root_certificates(root_store)
+            .with_no_client_auth();
+        c.alpn_protocols.push(ALPN_H2.as_bytes().to_owned());
         c
     });
-    let dns_name = DNSNameRef::try_from_ascii_str("nghttp2.org").expect("fail dns");
 
-    let mut core = Core::new().expect("fail new reactor gen");
-    let handle = core.handle();
-    let addr = "nghttp2.org:443".to_socket_addrs().expect("fail parse url").next().unwrap();
+     let addr = "http2.github.io:443"
+        .to_socket_addrs()
+        .unwrap()
+        .next()
+        .unwrap();
 
-    let tcp = TcpStream::connect(&addr, &handle);
+    println!("address: {:?}", addr);
 
-    let tcp = tcp.then(|res| {
-        let tcp = res.expect("error1");
-        tls_client_config.connect_async(dns_name, tcp)
-            .then(|res| {
-                let tls = res.expect("fail tls");
-                {
-                    let (_, session) = tls.get_ref();
-                    let negotiated_protocol = session.get_alpn_protocol();
-                    assert_eq!(Some(ALPN_H2), negotiated_protocol.as_ref().map(|x| &**x));
-                }
-                client::handshake(tls)
-            })
-            .then(|res| {
-                let (mut client, h2) = res.expect("fail handshake");
-                let req = Request::builder()
-                    .method(Method::GET)
-                    .uri(URL)
-                    .body(())
-                    .expect("fail build GET request");
-                let (response, _) = client.send_request(req, true).expect("fail send request");
-                let stream = response.and_then(|response| {
-                    let (_, body) = response.into_parts();
-                    body.for_each(|chunk| {
-                        println!("RX: {:?}", chunk);
-                        Ok(())
-                    })
-                });
+    let tcp = TcpStream::connect(&addr).await?;
+    let dns_name = ServerName::try_from("http2.github.io").unwrap();
+    let connector = TlsConnector::from(tls_client_config);
+    let res = connector.connect(dns_name, tcp).await;
+    let tls = res.unwrap();
+    {
+        let (_, session) = tls.get_ref();
+        let negotiated_protocol = session.alpn_protocol();
+        assert_eq!(
+            Some(ALPN_H2.as_bytes()),
+            negotiated_protocol.as_ref().map(|x| &**x)
+        );
+    }
 
-                h2.join(stream)
-            })
+    let (mut client, h2) = client::handshake(tls).await?;
+
+    let request = Request::builder()
+        .uri(URL)
+        .body(())
+        .unwrap();
+
+    println!("request: {:?}", request);
+
+    let mut trailers = HeaderMap::new();
+    trailers.insert("zomg", "hello".parse().unwrap());
+
+    let (response, mut stream) = client.send_request(request, false).unwrap();
+
+    stream.send_trailers(trailers).unwrap();
+
+    tokio::spawn(async move {
+        if let Err(e) = h2.await {
+            println!("err={:?}", e);
+        }
     });
 
-    core.run(tcp).expect("fail core.run()");
-}
+    let response = response.await?;
+    println!("response: {:?}", response);
 
-fn main() {
-    h2();
-}
+    {
+        let headers = response.headers();
+        for header in headers.iter() {
+            println!("headers: {:?}", header);
+        }
+    }
+    let mut body = response.into_body();
 
+    while let Some(chunk) = body.data().await {
+        println!("body: {:?}", chunk?);
+    }
+
+    Ok(())
+}
