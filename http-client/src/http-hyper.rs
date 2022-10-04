@@ -1,23 +1,23 @@
-extern crate hyper;
-extern crate rustc_serialize;
 use std::io::Read;
 use hyper::Client;
-use hyper::http::h1::Http11Protocol;
-use hyper::net::DefaultConnector;
+use hyper::body::Buf;
+use hyper_tls::HttpsConnector;
 
-static URL: &'static str = "https://http2bin.org/get";
+static URL: &'static str = "https://httpbin.org/get";
 
-fn http11() {
-    let connector = DefaultConnector::default();
-    let client = Client::with_protocol(Http11Protocol::with_connector(connector));
-    let mut res = client.get(URL).send().unwrap();
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
+    let https = HttpsConnector::new();
+    let client = Client::builder().build::<_, hyper::Body>(https);
+    let res = client.get(URL.parse()?).await?;
 
-    let mut body = String::new();
-    res.read_to_string(&mut body).unwrap();
+    let body = hyper::body::aggregate(res).await?;
+    let mut bbody = String::new();
 
-    println!("{}", body);
-}
+    match body.reader().read_to_string(&mut bbody) {
+        Ok(_) => println!("{}", bbody),
+        Err(e) => println!("error: {}", e),
+    };
 
-fn main() {
-    http11();
+    Ok(())
 }

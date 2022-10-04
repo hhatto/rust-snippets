@@ -1,11 +1,10 @@
-extern crate hyper;
-extern crate rustc_serialize;
 use std::io::Read;
 use rustc_serialize::json::Json;
 use hyper::Client;
-use hyper::header::Connection;
+use hyper::body::Buf;
+use hyper_tls::HttpsConnector;
 
-static URL: &'static str = "http://qiita.com/api/v2/items?per_page=2";
+static REQUEST_URL: &'static str = "https://qiita.com/api/v2/items?per_page=2";
 
 pub fn parse_json(jsonstr: &String) {
     let data = Json::from_str(&jsonstr).unwrap();
@@ -26,15 +25,20 @@ pub fn parse_json(jsonstr: &String) {
     }
 }
 
-fn main() {
-    let client = Client::new();
-    let mut res = client.get(URL)
-                        .header(Connection::close())
-                        .send()
-                        .unwrap();
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
+    let https = HttpsConnector::new();
+    let client = Client::builder().build::<_, hyper::Body>(https);
+    let url = REQUEST_URL.parse()?;
 
-    let mut body = String::new();
-    res.read_to_string(&mut body).unwrap();
+    let res = client.get(url).await?;
+    let body = hyper::body::aggregate(res).await?;
 
-    parse_json(&body);
+    let mut bbody = String::new();
+    match body.reader().read_to_string(&mut bbody) {
+        Ok(_) => parse_json(&bbody),
+        Err(e) => println!("error: {}", e),
+    };
+
+    Ok(())
 }

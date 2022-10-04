@@ -2,27 +2,30 @@
 name = "http-client"
 version = "0.1.0"
 authors = ["hhatto <hhatto.jp@gmail.com>"]
+edition = "2021"
 
 [dependencies]
-tokio-core = "0.1"
-hyper = "0.11"
+hyper = { version = "0.14", features = ["full"] }
+hyper-tls = "0.5"
+tokio = { version = "1", features = ["full"] }
 http = "0.1"
-native-tls = "0.1"
-tokio-tls = "0.1"
+native-tls = "0.2.10"
+tokio-tls = "0.3"
 rustc-serialize = "0.3"
+serde = "1"
+serde_json = "1"
 solicit = "0.4"
-websocket = "0.20.2"
+websocket = "0.26.5"
 h2 = "0.1"
 futures = "0.1"
-rustls = "0.12"
-tokio-rustls = "0.5"
-webpki = "0.18.0-alpha"
+rustls = "0.20"
+tokio-rustls = "0.23"
+webpki = "0.22"
 webpki-roots = "*"
 env_logger = "0.5.4"
 
 [dependencies.ws]
-version = "0.7.3"
-features = ["ssl"]
+version = "0.9"
 
 [dependencies.url]
 git = "https://github.com/servo/rust-url"
