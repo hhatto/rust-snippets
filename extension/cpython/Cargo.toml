@@ -8,8 +8,8 @@ name = "woothee"
 crate-type = ["cdylib"]
 
 [dependencies]
-woothee = "0.8"
+woothee = "0.13"
 
 [dependencies.cpython]
-version = "0.1"
+version = "0.7"
 features = ["extension-module"]
