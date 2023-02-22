@@ -1,30 +1,31 @@
 #[macro_use]
 extern crate log;
 extern crate env_logger;
-extern crate time;
 
-use std::env;
-use log::{LogRecord, LogLevelFilter};
-use env_logger::LogBuilder;
-
+use std::io::Write;
+use log::LevelFilter;
+use env_logger::{Builder, Env};
+use time::format_description::well_known::Rfc3339;
 
 fn myformat() {
-    let fmt = |record: &LogRecord| {
-        let loc = record.location();
-        let now = time::now();
-        let n = time::strftime("%Y-%m-%d %H:%M:%S.%s", &now).expect("strftime() error");
-        format!("[{}] [{}:{}] {} {}:{}  ({:?})",
-                record.level(), loc.file(), loc.line(), n, record.target(), record.args(), record.metadata())
-    };
+    let env = Env::new().filter("RUST_LOG");
 
-    let mut builder = LogBuilder::new();
-    builder.format(fmt).filter(None, LogLevelFilter::Info);
-
-    if env::var("RUST_LOG").is_ok() {
-        builder.parse(&env::var("RUST_LOG").unwrap());
-    }
-
-    builder.init().unwrap();
+    let mut builder = Builder::from_env(env);
+    builder.format(|buf, record| {
+        let ts = buf.timestamp();
+        let style = buf.style();
+        let file = record.file().unwrap();
+        let line = record.line().unwrap();
+        let now = time::OffsetDateTime::now_utc();
+        let n = now.format(&Rfc3339).unwrap();
+        writeln!(
+            buf,
+            "[{}] [{}:{}] {}({}) {}:{}",
+            record.level(), file, line, n, ts, record.target(), style.value(record.args())
+        )
+    })
+        .filter(None, LevelFilter::Info)
+        .init();
 
     error!("error level msg");
 }

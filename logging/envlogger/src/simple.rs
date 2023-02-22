@@ -2,12 +2,12 @@
 extern crate log;
 extern crate env_logger;
 
-use log::LogLevel;
+use log::Level;
 
 
 fn level() {
     println!("{}, {}, {}, {}, {}",
-             LogLevel::Trace, LogLevel::Debug, LogLevel::Info, LogLevel::Warn, LogLevel::Error);
+             Level::Trace, Level::Debug, Level::Info, Level::Warn, Level::Error);
 }
 
 fn simple() {
@@ -24,7 +24,7 @@ fn mytarget() {
 }
 
 fn main() {
-    env_logger::init().unwrap();
+    env_logger::init();
 
     level();
     simple();

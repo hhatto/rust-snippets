@@ -2,11 +2,12 @@
 name = "envlogger"
 version = "0.1.0"
 authors = ["Hideo Hattori <hhatto.jp@gmail.com>"]
+edition = "2021"
 
 [dependencies]
-log = "0.3"
-env_logger = "0.4"
-time = "0.1"
+log = "0.4"
+env_logger = "0.10"
+time = { version = "0.3", features = ["formatting"] }
 
 [[bin]]
 name = "simple"
