@@ -4,8 +4,8 @@ version = "0.1.0"
 authors = ["Hideo Hattori <hhatto.jp@gmail.com>"]
 
 [dependencies]
-quick-xml = "0.8.1"
-xml-rs = "0.6"
+quick-xml = "0.29"
+xml-rs = "0.8"
 
 [[bin]]
 name = "quickxml"

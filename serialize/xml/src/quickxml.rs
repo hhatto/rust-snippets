@@ -26,17 +26,17 @@ let xml = r#"<?xml version='1.0' encoding='UTF-8'?>
     reader.trim_text(true);
 
     loop {
-        match reader.read_event(&mut buf) {
+        match reader.read_event_into(&mut buf) {
             Ok(Event::Start(ref e)) | Ok(Event::Empty(ref e)) => {
-                println!("tag-name: {:?} attr: {:?}", std::str::from_utf8(e.name()).expect("convert error"),
+                println!("tag-name: {:?} attr: {:?}", std::str::from_utf8(e.name().as_ref()).expect("convert error"),
                         e.attributes().map(|a| {
                             let v = a.unwrap();
                             format!("{}={}",
-                                    std::str::from_utf8(v.key).expect("convert error"),
-                                    std::str::from_utf8(v.value).expect("convert error"))
+                                    std::str::from_utf8(v.key.as_ref()).expect("convert error"),
+                                    std::str::from_utf8(v.value.as_ref()).expect("convert error"))
                         }).collect::<Vec<_>>());
             },
-            Ok(Event::Text(e)) => println!("    text: {}", e.unescape_and_decode(&reader).unwrap()),
+            Ok(Event::Text(e)) => println!("    text: {}", e.unescape().unwrap()),
             Ok(Event::Eof) => break,
             Err(e) => panic!("error: {}: {:?}", reader.buffer_position(), e),
             _ => (),
