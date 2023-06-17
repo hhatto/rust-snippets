@@ -4,7 +4,7 @@ version = "0.1.0"
 authors = ["Hideo Hattori <hhatto.jp@gmail.com>"]
 
 [dependencies]
-protobuf = "1.2.2"
+protobuf = "3.2.0"
 
 [[bin]]
 name = "protobuf"

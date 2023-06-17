@@ -1,5 +1,7 @@
+syntax = "proto3";
+
 message Person {
-    required string name = 1;
-    required int32 id = 2;
+    string name = 1;
+    int32 id = 2;
     optional string email = 3;
 }
