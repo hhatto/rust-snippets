@@ -2,3 +2,4 @@
 members = [
     "envlogger",
 ]
+resolver = "2"

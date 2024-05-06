@@ -13,20 +13,24 @@ fn myformat() {
     let mut builder = Builder::from_env(env);
     builder.format(|buf, record| {
         let ts = buf.timestamp();
-        let style = buf.style();
+        let style = buf.default_level_style(record.level());
         let file = record.file().unwrap();
         let line = record.line().unwrap();
         let now = time::OffsetDateTime::now_utc();
         let n = now.format(&Rfc3339).unwrap();
         writeln!(
             buf,
-            "[{}] [{}:{}] {}({}) {}:{}",
-            record.level(), file, line, n, ts, record.target(), style.value(record.args())
+            "[{}] [{}:{}] {}({}) {}:{style}{}{style:#}",
+            record.level(), file, line, n, ts, record.target(), record.args()
         )
     })
+        // .filter(None, LevelFilter::Debug)
         .filter(None, LevelFilter::Info)
         .init();
 
+    debug!("debug level msg");
+    info!("info level msg");
+    warn!("warn level msg");
     error!("error level msg");
 }
 
