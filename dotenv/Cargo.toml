@@ -1,0 +1,17 @@
+[package]
+name = "dotenv"
+version = "0.1.0"
+authors = ["hhatto <hhatto.jp@gmail.com>"]
+edition = "2021"
+
+[dependencies]
+dotenvy = "0.15"
+dotenvy_macro = "0.15"
+
+[[bin]]
+name = "dotenvy"
+path = "src/dotenvy.rs"
+
+[[bin]]
+name = "dotenvy_with_macro"
+path = "src/dotenvy_with_macro.rs"
