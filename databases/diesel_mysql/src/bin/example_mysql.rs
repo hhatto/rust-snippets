@@ -8,8 +8,8 @@ use diesel_mysql::*;
 fn main() {
     use self::schema::memos::dsl::*;
 
-    let dbconn = establish_connection();
-    let results = memos.limit(5).load::<Memo>(&dbconn).expect("select error");
+    let mut dbconn = establish_connection();
+    let results = memos.limit(5).load::<Memo>(&mut dbconn).expect("select error");
 
     for memo in results {
         println!(

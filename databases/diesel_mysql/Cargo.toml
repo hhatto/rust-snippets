@@ -5,5 +5,5 @@ authors = ["Hideo Hattori <hhatto.jp@gmail.com>"]
 edition = "2021"
 
 [dependencies]
-diesel = { version = "1.4", features = ["mysql"] }
+diesel = { version = "2.2", features = ["mysql"] }
 dotenv = "0.15"
