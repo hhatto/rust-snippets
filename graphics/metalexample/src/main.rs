@@ -1,6 +1,3 @@
-extern crate image;
-extern crate metal_rs as metal;
-
 use metal::*;
 use std::mem;
 use image::{DynamicImage, save_buffer, ColorType};
@@ -26,7 +23,7 @@ fragment float4 FragmentShader(Vertex in [[stage_in]]) {
 }";
 
 fn main() {
-    let device = Device::system_default();
+    let device = Device::system_default().unwrap();
 
     let options = CompileOptions::new();
     let library = device.new_library_with_source(PROGRAM, &options).expect("new library");
@@ -72,7 +69,7 @@ fn main() {
 
     let rce = cb.new_render_command_encoder(&rpd);
     rce.set_render_pipeline_state(&rps);
-    rce.set_vertex_buffer(0, 0, Some(&vbuf));
+    rce.set_vertex_buffer(0, Some(&vbuf), 0);
     rce.draw_primitives(MTLPrimitiveType::Triangle, 0, 3);
     rce.end_encoding();
 
@@ -96,6 +93,6 @@ fn main() {
     let buf = img.clone().into_rgba8();
     texture.get_bytes(
         unsafe { mem::transmute(buf.as_ptr()) },
-        region, 0, bytes_per_row);
+        bytes_per_row, region, 0);
     let _ = save_buffer("triangle.png", &buf, texture.width() as u32, texture.height() as u32, ColorType::Rgba8);
 }

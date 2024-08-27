@@ -2,7 +2,8 @@
 name = "metalexample"
 version = "0.1.0"
 authors = ["Hideo Hattori <hhatto.jp@gmail.com>"]
+edition = "2021"
 
 [dependencies]
-metal-rs = "0.10.2"
+metal = "0.29"
 image = "0.23"
