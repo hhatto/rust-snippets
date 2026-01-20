@@ -2,14 +2,15 @@
 name = "pyo3-woothee"
 version = "0.1.0"
 authors = ["Hideo Hattori <hhatto.jp@gmail.com>"]
+edition = "2024"
 
 [lib]
-name = "woothee"
+name = "fast_woothee_pyo3"
 crate-type = ["cdylib"]
 
 [dependencies]
 woothee = "0.8"
 
 [dependencies.pyo3]
-version = "0.16"
+version = "0.27"
 features = ["extension-module"]

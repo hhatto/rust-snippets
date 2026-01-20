@@ -8,11 +8,11 @@ use pyo3::types::*;
 
 #[pymodule]
 #[pyo3(name = "fast_woothee_pyo3")]
-fn init_mod(_py: Python, m: &PyModule) -> PyResult<()> {
+fn init_mod(m: &Bound<'_, PyModule>) -> PyResult<()> {
 
     #[pyfunction]
     #[pyo3(name = "parse")]
-    pub fn parse(agent: &str) -> PyResult<HashMap<String, String>> {
+    pub fn parse(_py: Python<'_>, agent: &str) -> PyResult<HashMap<String, String>> {
         let parser = Parser::new();
         let result = parser.parse(agent);
         let r = match result {
@@ -32,15 +32,13 @@ fn init_mod(_py: Python, m: &PyModule) -> PyResult<()> {
 
     #[pyfunction]
     #[pyo3(name = "parse2")]
-    pub fn parse2(agent: &str) -> PyResult<PyObject> {
+    pub fn parse2(py: Python<'_>, agent: &str) -> PyResult<Py<PyAny>> {
         let parser = Parser::new();
         let result = parser.parse(agent);
         let r = match result {
             Some(r) => r,
             None => WootheeResult::new(),
         };
-        let gil = Python::acquire_gil();
-        let py = gil.python();
         let h = PyDict::new(py);
         let _ = h.set_item(PyString::new(py, "name"), PyString::new(py, r.name.as_str()));
         let _ = h.set_item(PyString::new(py, "category"), PyString::new(py, r.category.as_str()));
@@ -49,7 +47,7 @@ fn init_mod(_py: Python, m: &PyModule) -> PyResult<()> {
         let _ = h.set_item(PyString::new(py, "browser_type"), PyString::new(py, r.browser_type.as_str()));
         let _ = h.set_item(PyString::new(py, "version"), PyString::new(py, r.version.as_str()));
         let _ = h.set_item(PyString::new(py, "vendor"), PyString::new(py, r.vendor.as_str()));
-        Ok(h.to_object(py))
+        Ok(h.unbind().into_any())
     }
 
     #[pyfunction]
