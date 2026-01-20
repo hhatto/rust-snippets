@@ -5,7 +5,7 @@ build-backend = "maturin"
 [project]
 name = "fast-woothee-pyo3"
 version = "0.1.0"
-description = "example of Python Extension Module using with PyO3"
+description = "example of Python Extension Module using PyO3"
 requires-python = ">=3.8"
 authors = [
     { name = "Hideo Hattori", email = "hhatto.jp@gmail.com" }
