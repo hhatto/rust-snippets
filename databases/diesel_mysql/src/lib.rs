@@ -6,7 +6,7 @@ pub mod schema;
 
 use diesel::mysql::MysqlConnection;
 use diesel::prelude::*;
-use dotenv::dotenv;
+use dotenvy::dotenv;
 use std::env;
 
 pub fn establish_connection() -> MysqlConnection {
